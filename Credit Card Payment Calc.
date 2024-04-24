@@ -1,0 +1,68 @@
+#include <iostream>
+#include <cmath>
+#include <string>
+
+struct CreditCard {
+    std::string name;
+    double balance;
+    double annualInterestRate;
+    int numberOfMonths;
+};
+
+//Calculate the monthly payment
+
+double calculateMonthlyPayment(const CreditCard& card) {
+    double monthlyInterestRate = card.annualInterestRate / 12.0;
+    double numerator = card.balance * (monthlyInterestRate * pow(1 + monthlyInterestRate, card.numberOfMonths));
+    double denominator = pow(1 + monthlyInterestRate, card.numberOfMonths) - 1;
+    return numerator / denominator;
+}
+
+int main() {
+    bool continueProgram = true;
+
+    while (continueProgram) {
+        CreditCard card;
+
+        //Input user information
+
+        std::cout << "Enter your name: ";
+        std::getline(std::cin, card.name);
+
+        std::cout << "Enter credit card balance: $";
+        std::cin >> card.balance;
+
+        std::cout << "Enter annual interest rate (%): ";
+        std::cin >> card.annualInterestRate;
+
+        std::cout << "Enter desired number of months to pay off balance: ";
+        std::cin >> card.numberOfMonths;
+
+        double monthlyPayment = calculateMonthlyPayment(card);
+
+        //Output
+
+        std::cout << "\nName: " << card.name << std::endl;
+        std::cout << "Credit Card Balance: $" << card.balance << std::endl;
+        std::cout << "Annual Interest Rate: " << card.annualInterestRate << "%" << std::endl;
+        std::cout << "Number of Months to Pay off Balance: " << card.numberOfMonths << std::endl;
+        std::cout << "Monthly Payment Required: $" << monthlyPayment << std::endl;
+
+        //User Input
+
+        char choice;
+        std::cout << "\nDo you want to calculate another credit card payment? (y/n): ";
+        std::cin >> choice;
+
+        if (choice != 'y' && choice != 'Y') {
+            continueProgram = false;
+        }
+
+        //Clear
+
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+
+    return 0;
+}
+
